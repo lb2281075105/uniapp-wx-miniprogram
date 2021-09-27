@@ -16,6 +16,18 @@
     <view class="floor-list">
       <view class="floor-item" v-for="(item,i) in floorList" :key="i">
         <image :src="item.floor_title.image_src" class="floor-title"/>
+		<view class="floor-img-box">
+			<view class="left-img-box">
+				<image :src="item.product_list[0].image_src" mode="widthFix" :style="{width:item.product_list[0].image_width + 'rpx'}"></image>
+			</view>
+			
+			<view class="right-img-box">
+				<view class="right-img-item" v-for="(item1,i) in item.product_list" v-if="i !== 0" :key="i" @click="imageClickHandler(item1)">
+					<image :src="item1.image_src" mode="widthFix" :style="{width:item1.image_width + 'rpx'}" ></image>
+				</view>
+			</view>
+		</view>
+		
       </view>
     </view>
   </view>
@@ -63,10 +75,22 @@
           })
         }
       },
+	  imageClickHandler(item){
+		  uni.navigateTo({
+		  	url:item.navigator_url
+		  })
+	  },
       async getFloorList(){
         // uni.$http.get 返回的是promise对象 需要用上async await
        const {data:res} = await uni.$http.get("/api/public/v1/home/floordata")
        if(res.meta.status == 200){
+		   
+		   res.message.forEach(floor => {
+			   floor.product_list.forEach(product => {
+				   product.navigator_url = '/subpkg/goods_list/goods_list?' + product.navigator_url.split('?')[1]
+			   })
+		   })
+		   
          this.floorList = res.message
          console.log(this.floorList)
        }else{
@@ -100,4 +124,16 @@ swiper{
     width: 100%;
     height: 60rpx;
 }
+.floor-img-box{
+	display: flex;
+}
+.right-img-box{
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-around;
+}
+.left-img-box{
+	padding-left: 10rpx;
+}
+
 </style>
