@@ -17,12 +17,12 @@
       <view class="floor-item" v-for="(item,i) in floorList" :key="i">
         <image :src="item.floor_title.image_src" class="floor-title"/>
 		<view class="floor-img-box">
-			<navigator class="left-img-box" :url="item.navigator_url">
+			<navigator class="left-img-box" :url="item.product_list[0].navigator_url">
 				<image :src="item.product_list[0].image_src" mode="widthFix" :style="{width:item.product_list[0].image_width + 'rpx'}"></image>
 			</navigator>
 			
 			<view class="right-img-box">
-				<navigator class="right-img-item" v-for="(item1,i) in item.product_list" v-if="i !== 0" :key="i" :url="item.navigator_url">
+				<navigator class="right-img-item" v-for="(item1,i) in item.product_list" v-if="i !== 0" :key="i" :url="item1.navigator_url">
 					<image :src="item1.image_src" mode="widthFix" :style="{width:item1.image_width + 'rpx'}" ></image>
 				</navigator>
 			</view>
@@ -81,11 +81,11 @@
        const {data:res} = await uni.$http.get("/api/public/v1/home/floordata")
        if(res.meta.status == 200){
 		   
-		   res.message.forEach(floor => {
-			   floor.product_list.forEach(product => {
-				   product.navigator_url = '/subpkg/goods_list/goods_list?' + product.navigator_url.split('?')[1]
-			   })
-		   })
+         res.message.forEach(floor => {
+           floor.product_list.forEach(product => {
+             product.navigator_url = '/subpkg/goods_list/goods_list?' + product.navigator_url.split('?')[1]
+           })
+         })
 		   
          this.floorList = res.message
          console.log(this.floorList)
