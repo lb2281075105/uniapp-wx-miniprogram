@@ -17,14 +17,14 @@
       <view class="floor-item" v-for="(item,i) in floorList" :key="i">
         <image :src="item.floor_title.image_src" class="floor-title"/>
 		<view class="floor-img-box">
-			<view class="left-img-box">
+			<navigator class="left-img-box" :url="item.navigator_url">
 				<image :src="item.product_list[0].image_src" mode="widthFix" :style="{width:item.product_list[0].image_width + 'rpx'}"></image>
-			</view>
+			</navigator>
 			
 			<view class="right-img-box">
-				<view class="right-img-item" v-for="(item1,i) in item.product_list" v-if="i !== 0" :key="i" @click="imageClickHandler(item1)">
+				<navigator class="right-img-item" v-for="(item1,i) in item.product_list" v-if="i !== 0" :key="i" :url="item.navigator_url">
 					<image :src="item1.image_src" mode="widthFix" :style="{width:item1.image_width + 'rpx'}" ></image>
-				</view>
+				</navigator>
 			</view>
 		</view>
 		
@@ -75,11 +75,7 @@
           })
         }
       },
-	  imageClickHandler(item){
-		  uni.navigateTo({
-		  	url:item.navigator_url
-		  })
-	  },
+	  
       async getFloorList(){
         // uni.$http.get 返回的是promise对象 需要用上async await
        const {data:res} = await uni.$http.get("/api/public/v1/home/floordata")
