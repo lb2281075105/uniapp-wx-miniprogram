@@ -6,7 +6,7 @@
 			</uni-search-bar>
 		</view>
 		<view class="goods-list" v-if="searchResults.length !== 0">
-			<view v-for="(item,i) in searchResults" class="goods-item" @click="gotoGoodsTail(item)" :key="i">
+			<view v-for="(item,i) in searchResults" class="goods-item" @click="gotoGoodsDetail(item)" :key="i">
 				<view class="goods-name">
 					{{item.goods_name}}
 				</view>
@@ -18,10 +18,10 @@
 				
 			<view class="history-title">
 				<view>搜索历史</view>
-				<uni-icons type="trash"></uni-icons>
+				<uni-icons type="trash" @click="clean"></uni-icons>
 			</view>
 			<view class="history-list">
-				<uni-tag :text="item" v-for="(item,i) in histories" :key="i"></uni-tag>
+				<uni-tag :text="item" v-for="(item,i) in histories" :key="i" @click="gotoGoodsList(item)"></uni-tag>
 			</view>
 		</view>
 	</view>
@@ -35,8 +35,11 @@
 				searchValue:"",
 				kw:'',
 				searchResults:[], 
-				historyList:JSON.parse(uni.getStorageSync('kw') || '[]')
+				historyList:[]
 			};
+		},
+		onLoad() {
+			this.historyList = JSON.parse(uni.getStorageSync('kw') || '[]')	
 		},
 		computed:{
 			// 计算属性处理搜索文字在最前面显示
@@ -45,6 +48,15 @@
 			}
 		},
 		methods:{
+			gotoGoodsList(item){
+				uni.navigateTo({
+					url:'/subpkg/goods_list/goods_list?query=' + item
+				})
+			},
+			clean(){
+				uni.setStorageSync('kw','[]')
+				this.historyList = []
+			},
 			input(e){
 				clearTimeout(this.timer)
 				this.timer = setTimeout(() => {
@@ -77,7 +89,7 @@
 				  uni.$showMsg()
 				}
 			},
-			gotoGoodsTail(item){
+			gotoGoodsDetail(item){
 				uni.navigateTo({
 					url:'/subpkg/goods_detail/goods_detail?goods_id=' + item.goods_id
 				})
