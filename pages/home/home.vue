@@ -88,7 +88,7 @@
         // uni.$http.get 返回的是promise对象 需要用上async await
        const {data:res} = await uni.$http.get("/api/public/v1/home/floordata")
        if(res.meta.status == 200){
-		   
+		   console.log(res)
          res.message.forEach(floor => {
            floor.product_list.forEach(product => {
              product.navigator_url = '/subpkg/goods_list/goods_list?' + product.navigator_url.split('?')[1]
