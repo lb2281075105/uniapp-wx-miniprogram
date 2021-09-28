@@ -7,16 +7,17 @@
 			<view :class="['left-scroll-view-item',i === active ? 'active':''] " @click="activeChange(i)">{{item.cat_name}}</view>
 		</block>
 	</scroll-view>
-	<scroll-view class="right-scroll-view" scroll-y="true" :style="{height: wh + 'px'}">
-		<view>yyy</view>
-		<view>yyy</view>
-		<view>yyy</view>
-		<view>yyy</view>
-		<view>yyy</view>
-		<view>yyy</view>
-		<view>yyy</view>
-		<view>yyy</view>
-	
+	<scroll-view class="right-scroll-view" scroll-y="true" :style="{height: wh + 'px'}" :scroll-top="scrollTop">
+		<view class="cate-lv2" v-for="(item2,i2) in cateLevel2" :key="i2">
+			<view class="cate-lv2-title">/ {{item2.cat_name}} /</view>
+			<view class="cate-lv3-list">
+				<view class="cate-lv3-item" v-for="(item3,i3) in item2.children" :key="i3" @click="gotoGoodList(item3)">
+					<image :src="item3.cat_icon"></image>
+					<text>{{item3.cat_name}}</text>
+				</view>
+			</view>
+		</view>
+
 	</scroll-view>
   </view>
 </template>
@@ -28,7 +29,9 @@
       return {
         wh:0,
 		cateList:[],
-		active:0
+		active:0,
+		cateLevel2:[],
+		scrollTop:0
       };
     },
 	onLoad() {
@@ -41,12 +44,21 @@
 			const {data:res} = await uni.$http.get("/api/public/v1/categories")
 			if(res.meta.status == 200){
 			  this.cateList = res.message
+			  console.log(res)
+			  this.cateLevel2 = res.message[0].children
 			}else{
 			  uni.$showMsg()
 			}
 		},
 		activeChange(i){
 			this.active = i
+			this.cateLevel2 = this.cateList[i].children
+			this.scrollTop = this.scrollTop === 0 ? 1 : 0
+		},
+		gotoGoodList(item3){
+			uni.navigateTo({
+				url:'/subpkg/goods_list/goods_list?cid=' + item3.cat_id
+			})
 		}
 	}
 
@@ -82,6 +94,31 @@
 			
 		}
 
+	}
+}
+.cate-lv2-title{
+	font-size: 12px;
+	font-weight: bold;
+	text-align: center;
+	padding: 15px 0;
+}
+.cate-lv3-list{
+	display: flex;
+	flex-wrap: wrap;
+	.cate-lv3-item{
+		width: 33.33%;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		margin-bottom: 10px;
+		image{
+			width: 60px;
+			height: 60px;
+		}
+		text{
+			font-size: 12px;
+		}
 	}
 }
 </style>
