@@ -81,11 +81,11 @@
        const {data:res} = await uni.$http.get("/api/public/v1/home/floordata")
        if(res.meta.status == 200){
 		   
-		   res.message.forEach(floor => {
-			   floor.product_list.forEach(product => {
-				   product.navigator_url = '/subpkg/goods_list/goods_list?' + product.navigator_url.split('?')[1]
-			   })
-		   })
+         res.message.forEach(floor => {
+           floor.product_list.forEach(product => {
+             product.navigator_url = '/subpkg/goods_list/goods_list?' + product.navigator_url.split('?')[1]
+           })
+         })
 		   
          this.floorList = res.message
        }else{
