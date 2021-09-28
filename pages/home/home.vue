@@ -1,5 +1,9 @@
 <template>
   <view>
+	<view class="search-box">
+		<my-search :radius="18" :bgcolor="`#C00000`" @gotoSearchClick="gotoSearchClick()"></my-search>
+	</view>
+	  
     <swiper :indicator-dots="true" :autoplay="true" :interval="3000" :duration="1000" circular="true">
       <swiper-item v-for="(item,i) in swiperList" :key="i">
         <!-- / 根目录 -->
@@ -75,7 +79,11 @@
           })
         }
       },
-	  
+	  gotoSearchClick(){
+	  	uni.navigateTo({
+	  		url:'/subpkg/search/search'
+	  	})
+	  },
       async getFloorList(){
         // uni.$http.get 返回的是promise对象 需要用上async await
        const {data:res} = await uni.$http.get("/api/public/v1/home/floordata")
@@ -129,6 +137,12 @@ swiper{
 }
 .left-img-box{
 	padding-left: 10rpx;
+}
+.search-box{
+	position: sticky;
+	top: 0;
+	// width: 100%;
+	z-index: 999;
 }
 
 </style>
