@@ -1,25 +1,39 @@
 <template>
-	<!-- 并不是小程序里面全部使用rpx,固定的宽度和高度使用px -->
-  <view class="scroll-view-container">
-    <scroll-view class="left-scroll-view" scroll-y="true" :style="{height: wh + 'px'}">
-		
-		<block v-for="(item,i) in cateList" :key="i">
-			<view :class="['left-scroll-view-item',i === active ? 'active':''] " @click="activeChange(i)">{{item.cat_name}}</view>
-		</block>
-	</scroll-view>
-	<scroll-view class="right-scroll-view" scroll-y="true" :style="{height: wh + 'px'}" :scroll-top="scrollTop">
-		<view class="cate-lv2" v-for="(item2,i2) in cateLevel2" :key="i2">
-			<view class="cate-lv2-title">/ {{item2.cat_name}} /</view>
-			<view class="cate-lv3-list">
-				<view class="cate-lv3-item" v-for="(item3,i3) in item2.children" :key="i3" @click="gotoGoodList(item3)">
-					<image :src="item3.cat_icon"></image>
-					<text>{{item3.cat_name}}</text>
-				</view>
-			</view>
-		</view>
 
-	</scroll-view>
-  </view>
+	<!-- 并不是小程序里面全部使用rpx,固定的宽度和高度使用px -->
+	<!-- bgcolor="#CCCCCC"
+		:bgcolor="`#C00000`"
+		:bgcolor="'#C00000'" 都可以
+		
+		
+		:radius="18" 数字的话默认直接写
+	 -->
+	<view>
+		<my-search :radius="18" :bgcolor="`#C00000`" @gotoSearchClick="gotoSearchClick()"></my-search>
+		
+		<view class="scroll-view-container">
+			  
+		  <scroll-view class="left-scroll-view" scroll-y="true" :style="{height: wh + 'px'}">
+				
+				<block v-for="(item,i) in cateList" :key="i">
+					<view :class="['left-scroll-view-item',i === active ? 'active':''] " @click="activeChange(i)">{{item.cat_name}}</view>
+				</block>
+			</scroll-view>
+			<scroll-view class="right-scroll-view" scroll-y="true" :style="{height: wh + 'px'}" :scroll-top="scrollTop">
+				<view class="cate-lv2" v-for="(item2,i2) in cateLevel2" :key="i2">
+					<view class="cate-lv2-title">/ {{item2.cat_name}} /</view>
+					<view class="cate-lv3-list">
+						<view class="cate-lv3-item" v-for="(item3,i3) in item2.children" :key="i3" @click="gotoGoodList(item3)">
+							<image :src="item3.cat_icon"></image>
+							<text>{{item3.cat_name}}</text>
+						</view>
+					</view>
+				</view>
+		
+			</scroll-view>
+		</view>
+	</view>
+  
 </template>
 
 <script>
@@ -36,7 +50,7 @@
     },
 	onLoad() {
 		const systemInfo = uni.getSystemInfoSync()
-		this.wh = systemInfo.windowHeight
+		this.wh = systemInfo.windowHeight - 50
 		this.getCateList()
 	},
 	methods:{
@@ -44,7 +58,6 @@
 			const {data:res} = await uni.$http.get("/api/public/v1/categories")
 			if(res.meta.status == 200){
 			  this.cateList = res.message
-			  console.log(res)
 			  this.cateLevel2 = res.message[0].children
 			}else{
 			  uni.$showMsg()
@@ -58,6 +71,11 @@
 		gotoGoodList(item3){
 			uni.navigateTo({
 				url:'/subpkg/goods_list/goods_list?cid=' + item3.cat_id
+			})
+		},
+		gotoSearchClick(){
+			uni.navigateTo({
+				url:'/subpkg/search/search'
 			})
 		}
 	}
