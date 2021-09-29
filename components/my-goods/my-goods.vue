@@ -5,7 +5,8 @@
       </view>
       <view class="right-title-container">
         <view class="top-title">{{goods.goods_name}}</view>
-        <view class="bottom-money">¥{{parseFloat(goods.goods_price).toFixed(2)}}</view>
+		<!-- 通过管道符 | 调用过滤器 -->
+        <view class="bottom-money">¥{{goods.goods_price | toFixed}}</view>
       </view>
   </view>
 </template>
@@ -17,11 +18,19 @@
       goods:Object,
       default:{}
     },
+	filters:{
+		toFixed(num){
+			return Number(num).toFixed(2)
+		}
+	},
     data() {
       return {
         defaultPic:'https://img3.doubanio.com/f/movie/8dd0c794499fe925ae2ae89ee30cd225750457b4/pics/movie/celebrity-default-medium.png'
       };
-    }
+    },
+	methods:{
+		
+	}
   }
 </script>
 
