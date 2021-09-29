@@ -3,6 +3,14 @@
 import Vue from 'vue'
 import App from './App'
 
+// @代表项目根目录
+import store from '@/store/store.js'
+// import store from './store/store.js' 也可以
+// uni.navigateTo({
+// 			  // 路由跳转 / 斜线代表项目根目录
+// 		  	url:"/subpkg/goods_detail/goods_detail?goods_id=" + item.goods_id
+// 		  })
+
 Vue.config.productionTip = false
 
 import { $http } from '@escook/request-miniprogram'
