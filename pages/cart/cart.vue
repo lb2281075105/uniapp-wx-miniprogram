@@ -1,5 +1,8 @@
 <template>
+
 	<view>
+		<my-address></my-address>
+		
 		<view class="cart-title">
 			<uni-icons type="shop" size="18"></uni-icons>
 			<text class="cart-right-title">购物车</text>
@@ -7,8 +10,7 @@
 
 		<uni-swipe-action>
 			<block v-for="(item,i) in cart" :key="i">
-				<uni-swipe-action-item class="goods-list" :right-options="options"
-					@click="onClick">
+				<uni-swipe-action-item class="goods-list" :right-options="options" @click="onClick(item)">
 					<my-goods :goods="item" :showRadio="true" :showNumberBox="true" @radio-change="radioCahngeHandler"
 						@numChangeHandler="countChangeHandler"></my-goods>
 				</uni-swipe-action-item>
@@ -39,15 +41,15 @@
 			};
 		},
 		methods: {
-			...mapMutations('m_cart', ['updateCartStorage', 'updateCartCountStorage']),
+			...mapMutations('m_cart', ['updateCartStorage', 'updateCartCountStorage', 'removeCartCountStorage']),
 			radioCahngeHandler(goods) {
 				this.updateCartStorage(goods)
 			},
 			countChangeHandler(goods) {
 				this.updateCartCountStorage(goods)
 			},
-			onClick(index){
-				console.log(index)
+			onClick(item) {
+				this.removeCartCountStorage(item)
 			}
 		}
 	}
@@ -67,4 +69,5 @@
 
 		}
 	}
+
 </style>

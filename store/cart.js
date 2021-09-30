@@ -32,6 +32,10 @@ export default {
 				this.commit('m_cart/saveToStorage')
 			}
 		},
+		removeCartCountStorage(state,goods){
+			state.cart = state.cart.filter(x => x.goods_id !== goods.goods_id)
+			this.commit('m_cart/saveToStorage')
+		},
 		saveToStorage(state){
 			uni.setStorageSync('cart',JSON.stringify(state.cart))
 		}

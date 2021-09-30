@@ -10,7 +10,7 @@ import store from '@/store/store.js'
 // 			  // 路由跳转 / 斜线代表项目根目录
 // 		  	url:"/subpkg/goods_detail/goods_detail?goods_id=" + item.goods_id
 // 		  })
-
+// <image src="/static/cart_border@2x.png"></image>   这里的 / 线也是根目录
 Vue.config.productionTip = false
 
 import { $http } from '@escook/request-miniprogram'

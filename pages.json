@@ -23,7 +23,8 @@
       "enablePullDownRefresh": false
     }
 
-  }],
+  }
+    ],
   "subPackages":[
     {
       "root":"subpkg",
