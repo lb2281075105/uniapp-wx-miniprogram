@@ -15,7 +15,7 @@
 					<view class="goods-sc">收藏</view>
 				</view>
 			</view>
-			<view class="goods-kd">快递：免运费{{ cart.length }}</view>
+			<view class="goods-kd">快递：免运费</view>
 		</view>
 		<!-- 解决image 图片下方空白间隙 display:block就可以 -->
 		<rich-text :nodes="goods_info.goods_introduce"></rich-text>
