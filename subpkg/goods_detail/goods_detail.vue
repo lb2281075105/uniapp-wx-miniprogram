@@ -35,7 +35,23 @@
 
 	export default {
 		computed: {
-			...mapState('m_cart',['cart'])
+			...mapState('m_cart',['cart']),
+			...mapGetters('m_cart',['total'])
+		},
+		watch:{
+			
+			// 定义 total 侦听器，指向一个配置对象
+			total:{
+				// handler 属性用来定义侦听器的 function 处理函数
+				handler(newValue){
+					const findResult = this.options.find(x => x.text === '购物车')
+					if(findResult){
+						findResult.info = newValue
+					}
+				},
+			    // immediate 属性用来声明此侦听器，是否在页面初次加载完毕后立即调用
+				immediate:true
+			}
 		},
 		data() {
 			return {
@@ -48,7 +64,7 @@
 				}, {
 					icon: 'cart',
 					text: '购物车',
-					info: 100
+					info: 0
 				}],
 				buttonGroup: [{
 						text: '加入购物车',
@@ -68,7 +84,7 @@
 			this.getGoodDetail(goods_id)
 		},
 		methods: {
-			// ...mapMutations({'addToCart':'m_cart/addToCart'}),
+			...mapMutations('m_cart',['addToCart']),
 			async getGoodDetail(goods_id) {
 				// uni.$http.get 返回的是promise对象 需要用上async await
 				const {
@@ -100,8 +116,7 @@
 				}
 			},
 			buttonClick(e) {
-				console.log(e)
-				if(e.content.text == "立即购买"){
+				if(e.content.text == "加入购物车"){
 					// { goods_id, goods_name, goods_price, goods_count, goods_small_logo, goods_state }
 					const goods = {
 						goods_id:this.goods_info.goods_id,

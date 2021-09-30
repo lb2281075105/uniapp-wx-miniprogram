@@ -43,6 +43,7 @@
       },
 	  gotoDetail(item){
 		  uni.navigateTo({
+			  // / 这个地方是项目根目录
 		  	url:"/subpkg/goods_detail/goods_detail?goods_id=" + item.goods_id
 		  })
 	  }
