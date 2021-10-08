@@ -4,7 +4,7 @@
 			<button type="primary" size="mini" @click="chooseAddress">请选择收货地址+</button>
 		</view>
 
-		<view class="address-info-box" v-else>
+		<view class="address-info-box" v-else @click="chooseAddress">
 			<view class="row1">
 				<view class="row1-left">收货人：<text>{{address.userName}}</text></view>
 				<view class="row1-right">
@@ -26,39 +26,34 @@
 </template>
 
 <script>
+	import {mapMutations,mapState,mapGetters} from 'vuex'
 	export default {
 		name: "my-address",
 		data() {
 			return {
-				address: {}
+				// address: {}
 			};
 		},
-		onLoad() {
-
-		},
 		methods: {
+			...mapMutations('m_user', ['updateAddress']),
 			// 选择收货地址
 			async chooseAddress() {
 				// 1. 调用小程序提供的 chooseAddress() 方法，即可使用选择收货地址的功能
 				//    返回值是一个数组：第 1 项为错误对象；第 2 项为成功之后的收货地址对象
 				// 解构赋值
 				const [err, succ] = await uni.chooseAddress().catch(err => err)
-				console.log(succ)
 				// 2. 用户成功的选择了收货地址
 				if (err === null && succ.errMsg === 'chooseAddress:ok') {
 					// 为 data 里面的收货地址对象赋值
-					this.address = succ
+					this.updateAddress(this.address)
 				}
 
 			}
 
 		},
 		computed:{
-			addStr(){
-				if(!this.address.provinceName) return ''
-				
-				return this.address.provinceName + this.address.cityName + this.address.countyName + this.address.detailInfo
-			}
+			...mapState('m_user', ['address']),
+			...mapGetters('m_user', ['addStr'])
 		}
 
 	}
