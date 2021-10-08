@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<my-login v-if="!token">ddd</my-login>
+		<my-login v-if="!token"></my-login>
 		
 		<my-userinfo v-else></my-userinfo>
 	</view>

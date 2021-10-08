@@ -5,7 +5,8 @@ export default {
 		// 购物车的数组，用来存储购物车中每个商品的信息对象
 		// 每个商品的信息对象，都包含如下 6 个属性：
 		// { goods_id, goods_name, goods_price, goods_count, goods_small_logo, goods_state }
-		cart:JSON.parse(uni.getStorageSync('cart') || '[]')
+		// 一般储存在vuex中的都要持久化getStorageSync setStorageSync
+		cart:JSON.parse(uni.getStorageSync ('cart') || '[]')
 	}),
 	// state里面的数据只能在mutations里面进行修改
 	mutations:{
