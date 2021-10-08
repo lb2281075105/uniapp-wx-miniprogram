@@ -16,7 +16,7 @@ Vue.config.productionTip = false
 import { $http } from '@escook/request-miniprogram'
 uni.$http = $http
 $http.baseUrl = 'https://www.uinav.com'
-
+// api-hmugo-web.itheima.net
 $http.beforeRequest = function (options) {
   uni.showLoading({
     title: '数据加载中...',
