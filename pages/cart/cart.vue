@@ -1,6 +1,6 @@
 <template>
 
-	<view>
+	<view class="cart-container">
 		<my-address></my-address>
 		
 		<view class="cart-title">
@@ -16,6 +16,7 @@
 				</uni-swipe-action-item>
 			</block>
 		</uni-swipe-action>
+		<my-settle></my-settle>
 	</view>
 </template>
 
@@ -23,12 +24,12 @@
 	import badge from '@/mixins/tabbar-badge.js'
 	import {
 		mapState,
-		mapMutations
+		mapMutations,
 	} from 'vuex'
 	export default {
 		mixins: [badge],
 		computed: {
-			...mapState('m_cart', ['cart'])
+			...mapState('m_cart', ['cart'])		
 		},
 		data() {
 			return {
@@ -56,6 +57,9 @@
 </script>
 
 <style lang="scss">
+	.cart-container{
+		padding-bottom: 50px;
+	}
 	.cart-title {
 		height: 40px;
 		border-bottom: 1px solid #efefef;

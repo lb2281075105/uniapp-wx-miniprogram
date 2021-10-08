@@ -27,10 +27,15 @@ export default {
 		},
 		updateCartCountStorage(state,goods){
 			const findResult = state.cart.find(x => x.goods_id === goods.goods_id)
+			console.log(findResult)
 			if(findResult){
 				findResult.goods_count = goods.goods_count
 				this.commit('m_cart/saveToStorage')
 			}
+		},
+		qieHuanFullCheck(state,newState){
+			state.cart.forEach(x => x.goods_state = newState)
+			this.commit('m_cart/saveToStorage')
 		},
 		removeCartCountStorage(state,goods){
 			state.cart = state.cart.filter(x => x.goods_id !== goods.goods_id)
@@ -43,9 +48,15 @@ export default {
 	// getters相当于vue中的(computed)计算属性，通过getters进一步处理，得到我们想要的值，而且允许传参，第一个参数就是state
 	getters:{
 		total(state){
-			let count = 0
-			state.cart.forEach(x => count += x.goods_count)
-			return count
+			return state.cart.reduce((total,item) => total += item.goods_count,0)
+		},
+		checkedCount(state){
+			// concat
+			return state.cart.filter(x => x.goods_state).reduce((total,item) => total += item.goods_count,0)
+		},
+		checkedGoodsAmount(state){
+			// concat
+			return state.cart.filter(x => x.goods_state).reduce((total,item) => total += (item.goods_count * item.goods_price),0).toFixed(2)
 		}
 	}
 
