@@ -1,8 +1,8 @@
 <template>
 
-	<view class="cart-container">
+	<view class="cart-container" v-if="cart.length !== 0">
 		<my-address></my-address>
-		
+
 		<view class="cart-title">
 			<uni-icons type="shop" size="18"></uni-icons>
 			<text class="cart-right-title">购物车</text>
@@ -18,6 +18,10 @@
 		</uni-swipe-action>
 		<my-settle></my-settle>
 	</view>
+	<view v-else class="placeholder">
+		<image src="/static/cart_empty@2x.png" mode="" class="placeholder-image" />
+		<view class="placeholder-title">空空如也</view>
+	</view>
 </template>
 
 <script>
@@ -29,7 +33,7 @@
 	export default {
 		mixins: [badge],
 		computed: {
-			...mapState('m_cart', ['cart'])		
+			...mapState('m_cart', ['cart'])
 		},
 		data() {
 			return {
@@ -57,9 +61,10 @@
 </script>
 
 <style lang="scss">
-	.cart-container{
+	.cart-container {
 		padding-bottom: 50px;
 	}
+
 	.cart-title {
 		height: 40px;
 		border-bottom: 1px solid #efefef;
@@ -74,4 +79,21 @@
 		}
 	}
 
+	.placeholder {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.placeholder-image {
+		margin-top: 150px;
+		width: 80px;
+		height: 80px;
+	}
+
+	.placeholder-title {
+		font-size: 12px;
+		margin-top: 10px;
+	}
 </style>

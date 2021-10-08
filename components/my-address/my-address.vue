@@ -49,7 +49,7 @@
 				// 2. 用户成功的选择了收货地址
 				if (err === null && succ.errMsg === 'chooseAddress:ok') {
 					// 为 data 里面的收货地址对象赋值
-					this.updateAddress(this.address)
+					this.updateAddress(succ)
 				}
 				// 3. 用户没有授权
 				if (err && (err.errMsg === 'chooseAddress:fail auth deny' || err.errMsg === 'chooseAddress:fail authorize no response')) {
