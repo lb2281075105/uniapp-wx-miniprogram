@@ -15,6 +15,10 @@
 		mapMutations
 	} from 'vuex'
 	export default {
+		computed: {
+			// 调用 mapState 辅助方法，把 m_user 模块中的数据映射到当前用组件中使用
+			...mapState('m_user', ['redirectInfo']),
+		},
 		name: "my-login",
 		data() {
 			return {
@@ -22,7 +26,7 @@
 			};
 		},
 		methods: {
-			...mapMutations('m_user', ['updateUserInfo', 'updateToken']),
+			...mapMutations('m_user', ['updateUserInfo', 'updateToken', 'updateRedirectInfo']),
 			getUserInfo(e) {
 				console.log(e)
 				// 判断是否获取用户信息成功
@@ -54,6 +58,25 @@
 				console.log(loginResult)
 				// 2. 更新 vuex 中的 token
 				this.updateToken(loginResult.message.token)
+
+				// 判断 vuex 中的 redirectInfo 是否为 null
+				// 如果不为 null，则登录成功之后，需要重新导航到对应的页面
+				this.navigateBack()
+			},
+			// 返回登录之前的页面
+			navigateBack() {
+				// redirectInfo 不为 null，并且导航方式为 switchTab
+				if (this.redirectInfo && this.redirectInfo.openType === 'switchTab') {
+					// 调用小程序提供的 uni.switchTab() API 进行页面的导航
+					uni.switchTab({
+						// 要导航到的页面地址
+						url: this.redirectInfo.from,
+						// 导航成功之后，把 vuex 中的 redirectInfo 对象重置为 null
+						complete: () => {
+							this.updateRedirectInfo(null)
+						}
+					})
+				}
 			}
 		}
 	}

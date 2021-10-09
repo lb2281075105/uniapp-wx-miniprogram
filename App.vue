@@ -9,6 +9,7 @@
 			console.log('App Show')
 		},
 		onHide: function() {
+			ClearStorageOption
 			console.log('App Hide')
 		}
 	}
